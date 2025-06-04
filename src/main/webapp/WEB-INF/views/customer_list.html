@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3>Danh sách khách hàng</h3>
+<form th:action="@{/seach-name}" method="get" class="mb-4">
+  <input type="text" name="last_name" placeholder="Tìm tên khách hàng..."
+         class="border p-2 rounded" />
+  <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded">Tìm kiếm</button>
+</form>
+<br>
+<table border="1" cellpadding="8" cellspacing="0">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Họ</th>
+    <th>Tên</th>
+    <th>Số điện thoại</th>
+    <th>Địa chỉ</th>
+    <th>Ảnh</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="cus : ${customers}">
+    <td th:text="${cus.id}"></td>
+    <td th:text="${cus.first_name}"></td>
+    <td th:text="${cus.last_name}"></td>
+    <td th:text="${cus.phone}"></td>
+    <td th:text="${cus.address}"></td>
+    <td>
+      <img th:src="${cus.fileImage}" alt="">
+    </td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>

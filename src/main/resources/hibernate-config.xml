@@ -30,5 +30,6 @@
 
         <mapping class="com.data.entity.Admin"/>
         <mapping class="com.data.entity.Product"/>
+        <mapping class="com.data.entity.Customer"/>
     </session-factory>
 </hibernate-configuration>

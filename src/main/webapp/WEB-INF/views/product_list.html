@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách sản phẩm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+<div class="max-w-6xl mx-auto bg-white p-6 rounded shadow">
+    <h3 class="text-2xl font-bold mb-4">Danh sách sản phẩm</h3>
+
+    <!-- Form lọc sản phẩm theo khoảng giá -->
+    <form method="get" action="filter-product" class="mb-4 flex items-center space-x-4">
+        <div>
+            <label for="minPrice" class="mr-2 font-medium">Giá từ:</label>
+            <input type="number" step="0.01" name="minPrice" id="minPrice"
+                   class="border rounded px-2 py-1 w-24"
+                   th:value="${minPrice}" placeholder="0" />
+        </div>
+        <div>
+            <label for="maxPrice" class="mr-2 font-medium">đến:</label>
+            <input type="number" step="0.01" name="maxPrice" id="maxPrice"
+                   class="border rounded px-2 py-1 w-24"
+                   th:value="${maxPrice}" placeholder="1000000" />
+        </div>
+        <button type="submit"
+                class="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">
+            Lọc
+        </button>
+    </form>
+
+    <table class="min-w-full border border-gray-300 text-sm">
+        <thead class="bg-gray-200">
+        <tr>
+            <th class="p-2 border">ID</th>
+            <th class="p-2 border">Tên sản phẩm</th>
+            <th class="p-2 border">Mô tả</th>
+            <th class="p-2 border">Giá</th>
+            <th class="p-2 border">Tồn kho</th>
+            <th class="p-2 border">Ảnh</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p : ${products}" class="border-t">
+            <td class="p-2 border" th:text="${p.id}"></td>
+            <td class="p-2 border" th:text="${p.productName}"></td>
+            <td class="p-2 border" th:text="${p.description}"></td>
+            <td class="p-2 border" th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 2, 'POINT')} + ' ₫'"></td>
+            <td class="p-2 border" th:text="${p.stock}"></td>
+            <td class="p-2 border">
+                <img th:src="${p.image}" alt="Ảnh" class="w-16 h-16 object-cover rounded" />
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Phân trang -->
+    <div class="flex justify-between items-center mt-6">
+        <div>
+            Trang <span th:text="${currentPage + 1}"></span> / <span th:text="${totalPages}"></span>
+        </div>
+
+        <div class="flex space-x-2">
+            <!-- Trang trước -->
+            <a th:if="${currentPage > 0}"
+               th:href="@{/products(page=${currentPage - 1}, size=5)}"
+               class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">← Trang trước</a>
+
+            <!-- Các số trang -->
+            <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+               th:href="@{/products(page=${i}, size=5)}"
+               th:text="${i + 1}"
+               th:classappend="${i == currentPage} ? 'bg-blue-600 text-white' : 'bg-gray-200 text-black'"
+               class="px-3 py-1 rounded hover:bg-blue-400"></a>
+
+            <!-- Trang sau -->
+            <a th:if="${currentPage + 1 < totalPages}"
+               th:href="@{/products(page=${currentPage + 1}, size=5)}"
+               class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">Trang sau →</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

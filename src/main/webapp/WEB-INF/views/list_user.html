@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách người dùng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-6 bg-gray-100">
+<div class="max-w-4xl mx-auto bg-white p-4 rounded shadow">
+    <h3 class="text-xl font-bold mb-4">Danh sách người dùng</h3>
+    <form th:action="@{/search-username}" method="get" class="mb-4">
+        <input type="text" name="username" placeholder="Tìm tên người dùng..."
+               class="border p-2 rounded" />
+        <button type="submit" class="bg-blue-500 text-white px-4 py-1 rounded">Tìm kiếm</button>
+    </form>
+
+    <table class="min-w-full border text-sm">
+        <thead class="bg-gray-200">
+        <tr>
+            <th class="border p-2">Tên người dùng</th>
+            <th class="border p-2">Quyền</th>
+            <th class="border p-2">Trạng thái</th>
+            <th class="border p-2">Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="a : ${admins}">
+            <td class="border p-2" th:text="${a.username}"></td>
+            <td class="border p-2" th:text="${a.role}"></td>
+            <td class="border p-2" th:text="${a.status} ? 'Đang hoạt động' : 'Đã khóa'"></td>
+            <td class="border p-2">
+                <form th:action="@{/toggle-lock}" method="post">
+                    <input type="hidden" name="id" th:value="${a.id}" />
+                    <input type="hidden" name="status" th:value="${!a.status}" />
+                    <button type="submit"
+                            th:text="${a.status} ? 'Khóa' : 'Mở khóa'"
+                            class="px-3 py-1 rounded text-white"
+                            th:classappend="${a.status} ? ' bg-red-500 hover:bg-red-600' : ' bg-green-500 hover:bg-green-600'">
+                    </button>
+                </form>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

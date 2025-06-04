@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class AdminController {
@@ -36,5 +37,25 @@ public class AdminController {
         }
     }
 
+    @GetMapping("/list-admin")
+    public String listAdmin(Model model){
+        List<Admin> admins = adminService.findByRole("user");
+        model.addAttribute("admins", admins);
+        return "list_user";
+    }
+
+    @PostMapping("/toggle-lock")
+    public String toggleLock(@RequestParam("id") int id,
+                             @RequestParam("status") boolean status){
+        adminService.changeUserStatus(id, status);
+        return "redirect:/list-admin";
+    }
+
+    @GetMapping("/search-username")
+    public String searchByUsername(@RequestParam("username") String username, Model model) {
+        List<Admin> admins = adminService.searchByName(username);
+        model.addAttribute("admins", admins);
+        return "list_user";
+    }
 
 }

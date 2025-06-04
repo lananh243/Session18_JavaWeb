@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm Sản phẩm</title>
+</head>
+<body>
+<h2>Thêm sản phẩm mới</h2>
+
+<form th:action="@{/save-product}" method="post" enctype="multipart/form-data" th:object="${productDTO}">
+
+    <div>
+        <label for="productName">Tên sản phẩm:</label>
+        <input type="text" id="productName" th:field="*{productName}" />
+        <div th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}" style="color: red;"></div>
+    </div>
+
+    <div>
+        <label for="description">Mô tả:</label>
+        <textarea id="description" th:field="*{description}"></textarea>
+        <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color: red;"></div>
+    </div>
+
+    <div>
+        <label for="price">Giá:</label>
+        <input type="number" id="price" step="0.01" th:field="*{price}" />
+        <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color: red;"></div>
+    </div>
+
+    <div>
+        <label for="stock">Tồn kho:</label>
+        <input type="number" id="stock" th:field="*{stock}" />
+        <div th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}" style="color: red;"></div>
+    </div>
+
+    <div>
+        <label>Ảnh sản phẩm:</label>
+        <input type="file" name="image" />
+    </div>
+
+
+    <div>
+        <button type="submit">Lưu sản phẩm</button>
+    </div>
+
+</form>
+
+</body>
+</html>
